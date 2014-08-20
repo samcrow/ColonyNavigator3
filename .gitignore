@@ -1,0 +1,4 @@
+# Ignore generated directorys
+bin
+gen
+

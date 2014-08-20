@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:id="@+id/search_box"
+          android:title="@string/search"
+          android:icon="@drawable/ic_action_search"
+          android:showAsAction="ifRoom"
+          android:actionViewClass="android.widget.SearchView" />
+    
+    <item android:id="@+id/edit_item"
+        android:title="@string/edit_colony"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_edit" />
+    
+    <item android:id="@+id/my_location_item"
+        android:title="@string/my_location"
+        android:showAsAction="ifRoom"
+        android:checkable="true"
+        android:checked="false"
+        android:icon="@drawable/ic_menu_my_location_gray" />
+    
+    <!--
+    <item android:id="@+id/layers_item"
+        android:title="@string/layers"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_view" /> -->
+    
+    <item android:id="@+id/preferences_item"
+        android:title="@string/preferences"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_settings" />
+
+</menu>
