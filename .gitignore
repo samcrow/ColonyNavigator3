@@ -2,3 +2,6 @@
 bin
 gen
 
+# Ignore file types
+*.DS_Store
+

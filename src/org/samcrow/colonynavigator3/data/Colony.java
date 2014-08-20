@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mapsforge.core.model.LatLong;
 import org.samcrow.colonynavigator3.CoordinateTransformer;
+import org.samcrow.colonynavigator3.map.ColonyMarker;
 
 /**
  * Stores data for one colony
@@ -93,6 +94,8 @@ public class Colony implements Serializable, JSONSerializable,
 	private Date modified = null;
 
 	private transient ColonyChangeListener listener = null;
+	
+	private transient ColonyMarker marker = null;
 
 	/**
 	 * Get the colony's X-coordinate in meters east of the southwest corner
@@ -430,5 +433,13 @@ public class Colony implements Serializable, JSONSerializable,
 			return false;
 		}
 		return true;
+	}
+
+	public ColonyMarker getMarker() {
+		return marker;
+	}
+
+	public void setMarker(ColonyMarker marker) {
+		this.marker = marker;
 	}
 }

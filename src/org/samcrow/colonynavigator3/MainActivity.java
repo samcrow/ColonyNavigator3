@@ -6,7 +6,6 @@ import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
 import org.mapsforge.map.android.AndroidPreferences;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
-import org.mapsforge.map.android.layer.MyLocationOverlay;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.LayerManager;
@@ -22,6 +21,8 @@ import org.samcrow.colonynavigator3.data.ColonyList;
 import org.samcrow.colonynavigator3.data.ColonyList.NoSuchColonyException;
 import org.samcrow.colonynavigator3.data.ColonySelection;
 import org.samcrow.colonynavigator3.map.ColonyMarker;
+import org.samcrow.colonynavigator3.map.NotifyingMyLocationOverlay;
+import org.samcrow.colonynavigator3.map.RouteLineLayer;
 import org.samcrow.data.provider.ColonyProvider;
 import org.samcrow.data.provider.MemoryCardDataProvider;
 
@@ -49,7 +50,7 @@ import com.applantation.android.svg.SVGParser;
  * @see SystemUiHider
  */
 public class MainActivity extends Activity implements
-		OnSharedPreferenceChangeListener {
+		OnSharedPreferenceChangeListener, ColonyEditDialogFragment.ColonyChangeListener {
 
 	/**
 	 * The initial position of the map
@@ -68,7 +69,7 @@ public class MainActivity extends Activity implements
 
 	private LayerManager layerManager;
 	
-	private MyLocationOverlay locationOverlay;
+	private NotifyingMyLocationOverlay locationOverlay;
 
 	private ColonyProvider provider;
 
@@ -102,6 +103,13 @@ public class MainActivity extends Activity implements
 			for (Colony colony : colonies) {
 				layerManager.getLayers().add(new ColonyMarker(colony));
 			}
+			
+			// Add layers above colonies
+
+			// Location layer
+			setUpLocationOverlay();
+			// Route line layer
+			setUpRouteLine();
 
 		} catch (Exception ex) {
 			// Show a dialog, then quit
@@ -149,9 +157,21 @@ public class MainActivity extends Activity implements
 				MAP_FILE, InternalRenderTheme.OSMARENDER, false);
 
 		layerManager.getLayers().add(tileRendererLayer);
-
-		// Add a display of the user's location
-		locationOverlay = new MyLocationOverlay(this,
+	}
+	
+	private void setUpRouteLine() {
+		final RouteLineLayer route = new RouteLineLayer(locationOverlay);
+		selection.addChangeListener(new ColonySelection.Listener() {
+			@Override
+			public void selectedColonyChanged(Colony oldColony, Colony newColony) {
+				route.setDestination(newColony.getMarker());
+			}
+		});
+		layerManager.getLayers().add(route);
+	}
+	
+	private void setUpLocationOverlay() {
+		locationOverlay = new NotifyingMyLocationOverlay(this,
 				mapView.getModel().mapViewPosition,
 				AndroidGraphicFactory.convertToBitmap(getMyLocationDrawable()));
 		layerManager.getLayers().add(locationOverlay);
@@ -214,6 +234,24 @@ public class MainActivity extends Activity implements
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+
+	@Override
+	public void onColonyChanged(Bundle colonyData) {
+		// Find the colony that was changed and update its data
+		final int colonyId = colonyData.getInt("colony_id");
+		Colony colony = colonies.getById(colonyId);
+		if(colonyData.containsKey("colony_visited")) {
+			colony.setVisited(colonyData.getBoolean("colony_visited"));
+		}
+		if(colonyData.containsKey("colony_active")) {
+			colony.setActive(colonyData.getBoolean("colony_active"));
+		}
+		// Save the colony
+		provider.updateColony(colony);
+		// Redraw the colonies, and all other layers
+		layerManager.redrawLayers();
 	}
 
 	@Override

@@ -59,6 +59,11 @@ public class ColonyDrawable extends Drawable {
 	
 	private static final float SELECTED_CIRCLE_RADIUS = BG_RADIUS - (SELECTED_CIRCLE_LINE_WIDTH / 2f);
 	
+	/**
+	 * The horizontal distance from the center that the colony number text is offset
+	 */
+	private static final int TEXT_X_OFFSET = 5;
+	
 	private final Paint paint = new Paint();
 	
 	private FontMetrics metrics = new FontMetrics();
@@ -85,6 +90,22 @@ public class ColonyDrawable extends Drawable {
 		
 	}
 	
+	/**
+	 * 
+	 * @return The distance that this drawable
+	 * should be moved right along the X axis
+	 * to make the center of its point match up
+	 * with the center of the dimensions of this drawable
+	 */
+	public int getXOffset() {
+		if(idStringWidth + TEXT_X_OFFSET <= BG_RADIUS) {
+			return 0;
+		}
+		else {
+			return (idStringWidth + TEXT_X_OFFSET) - BG_RADIUS;
+		}
+	}
+	
 
 	@Override
 	public int getIntrinsicHeight() {
@@ -93,7 +114,7 @@ public class ColonyDrawable extends Drawable {
 
 	@Override
 	public int getIntrinsicWidth() {
-		return 2 * BG_RADIUS + idStringWidth;
+		return BG_RADIUS + idStringWidth + TEXT_X_OFFSET;
 	}
 
 	@Override
@@ -142,7 +163,7 @@ public class ColonyDrawable extends Drawable {
 		
 		//Draw colony number
 		paint.setColor(LABEL_COLOR);
-		canvas.drawText(String.valueOf(colony.getId()), centerX + 5, centerY + metrics.descent, paint);
+		canvas.drawText(String.valueOf(colony.getId()), centerX + TEXT_X_OFFSET, centerY + metrics.descent, paint);
 	}
 	
 	
