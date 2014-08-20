@@ -102,7 +102,7 @@ public class RouteLineLayer extends Polyline {
 
 	private static Paint getPaint() {
 		Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
-		paint.setColor(Color.GREEN);
+		paint.setColor(Color.RED);
 		paint.setStrokeWidth(4);
 		paint.setStyle(Style.STROKE);
 		

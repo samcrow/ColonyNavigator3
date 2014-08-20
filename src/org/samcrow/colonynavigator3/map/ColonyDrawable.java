@@ -51,7 +51,7 @@ public class ColonyDrawable extends Drawable {
 	/**
 	 * Line color for the circle drawn around the selected colony
 	 */
-	private static final int SELECTED_CIRCLE_COLOR = Color.GREEN;
+	private static final int SELECTED_CIRCLE_COLOR = Color.RED;
 	/**
 	 * Line width for the circle drawn around the selected colony
 	 */
@@ -114,7 +114,12 @@ public class ColonyDrawable extends Drawable {
 
 	@Override
 	public int getIntrinsicWidth() {
-		return BG_RADIUS + idStringWidth + TEXT_X_OFFSET;
+		if(idStringWidth + TEXT_X_OFFSET > BG_RADIUS) {
+			return BG_RADIUS + idStringWidth + TEXT_X_OFFSET;
+		}
+		else {
+			return 2 * BG_RADIUS;
+		}
 	}
 
 	@Override
