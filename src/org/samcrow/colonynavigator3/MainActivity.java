@@ -380,6 +380,9 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(locationOverlay == null) {
+			setUpLocationOverlay();
+		}
 		// Start location updates
 		locationOverlay.enableMyLocation(false);
 	}
