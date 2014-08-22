@@ -10,6 +10,7 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
 public class ColonyDrawable extends Drawable {
@@ -148,8 +149,29 @@ public class ColonyDrawable extends Drawable {
 		paint.setColor(backgroundColor);
 		paint.setStyle(Style.FILL);
 		
-		//Draw the background at the center position
-		canvas.drawCircle(centerX, centerY, BG_RADIUS, paint);
+		if(colony.isVisited()) {
+			if(colony.isFocusColony()) {
+				// Visited, focus colony
+				// Draw a two-part circle
+				drawTwoColorCircle(canvas, centerX, centerY, BG_VISITED_COLOR, BG_FOCUS_COLOR);
+			}
+			else {
+				// Visited, not focus colony
+				drawBackgroundCircle(canvas, centerX, centerY, BG_VISITED_COLOR);
+			}
+		}
+		else {
+			if(colony.isFocusColony()) {
+				// Not visited, focus colony
+				drawBackgroundCircle(canvas, centerX, centerY, BG_FOCUS_COLOR);
+				
+			}
+			else {
+				// Not visited, not focus colony
+				drawBackgroundCircle(canvas, centerX, centerY, BG_NORMAL_COLOR);
+			}
+		}
+		
 		
 		// Draw the circle around the colony if it is selected
 		if(colony.isSelected()) {
@@ -171,6 +193,27 @@ public class ColonyDrawable extends Drawable {
 		canvas.drawText(String.valueOf(colony.getId()), centerX + TEXT_X_OFFSET, centerY + metrics.descent, paint);
 	}
 	
+	/**
+	 * Draws a background circle in the provided color
+	 * @param color
+	 */
+	private void drawBackgroundCircle(Canvas canvas, float centerX, float centerY, int color) {
+		paint.setColor(color);
+		paint.setStyle(Style.FILL);
+		
+		canvas.drawCircle(centerX, centerY, BG_RADIUS, paint);
+	}
+	
+	private void drawTwoColorCircle(Canvas canvas, float centerX, float centerY, int leftColor, int rightColor) {
+		final RectF rect = new RectF(centerX - BG_RADIUS, centerY - BG_RADIUS, centerX + BG_RADIUS, centerY + BG_RADIUS);
+		paint.setStyle(Style.FILL);
+		// Draw left arc
+		paint.setColor(leftColor);
+		canvas.drawArc(rect, 90, 180, true, paint);
+		// Draw right arc
+		paint.setColor(rightColor);
+		canvas.drawArc(rect, -90, 180, true, paint);
+	}
 	
 
 	@Override

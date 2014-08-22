@@ -1,11 +1,13 @@
 package org.samcrow.data.provider;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.samcrow.colonynavigator3.data.Colony;
 import org.samcrow.colonynavigator3.data.ColonyList;
 import org.samcrow.data.io.CSVFileParser;
 import org.samcrow.data.io.FileParser;
+import org.samcrow.data.io.FocusColonyFinder;
 import org.samcrow.data.io.JSONFileParser;
 
 /**
@@ -95,6 +97,18 @@ public class MemoryCardDataProvider implements ColonyProvider {
 		else {
 			String message = "Neither "+csvFile.getAbsolutePath()+" or "+jsonFile.getAbsolutePath()+" exists! Failed to get colonies from the memory card.";
 			System.err.println(message);
+		}
+		
+
+		//Look for focus_colonies.txt
+		File focusFile = new File(kDir+"focus_colonies.txt");
+		if(focusFile.exists() && focusFile.canRead()) {
+			try {
+				new FocusColonyFinder(focusFile, colonies).updateColonies();
+			} catch (IOException e) {
+				System.err.println("Could not read focus colonies file");
+				e.printStackTrace();
+			}
 		}
 	}
 
