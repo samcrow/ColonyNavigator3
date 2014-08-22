@@ -3,14 +3,21 @@
 
     <string name="app_name">Colony Navigator 3</string>
     <string name="preferences">Preferences</string>
-	<string name="search">Search</string>
-	<string name="visited">Visited</string>
-	<string name="active">Active</string>
-	<string name="layers">Layers</string>
-	<string name="my_location">Show my location</string>
-	<string name="edit_colony">Edit colony information</string>
-	
-	<string name="save_action">OK</string>
-	<string name="cancel_action">Cancel</string>
-    
+    <string name="search">Search</string>
+    <string name="visited">Visited</string>
+    <string name="active">Active</string>
+    <string name="layers">Layers</string>
+    <string name="my_location">Show my location</string>
+    <string name="edit_colony">Edit colony information</string>
+    <string name="save_action">OK</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="title_activity_update">Update</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="ok">OK</string>
+    <string name="updating">Updating&#8230;</string>
+    <string name="temp_status_text">Update status</string>
+    <string name="title_activity_update_check">UpdateCheckActivity</string>
+    <string name="checking_for_updates">Checking for updates&#8230;</string>
+    <string name="check_for_updates">Check for updates</string>
+
 </resources>

@@ -29,9 +29,11 @@ import org.samcrow.data.provider.MemoryCardDataProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -339,6 +341,20 @@ public class MainActivity extends Activity implements
 					myLocationItem.setIcon(R.drawable.ic_menu_my_location_gray);
 					locationOverlay.setSnapToLocationEnabled(false);
 				}
+				
+				return true;
+			}
+		});
+		
+		// Check for updates item
+		final MenuItem checkForUpdatesItem = menu.findItem(R.id.check_for_updates_item);
+		checkForUpdatesItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// Start the update check activity
+				final Intent intent = new Intent(MainActivity.this, org.samcrow.updater.UpdateCheckActivity.class);
+				intent.setData(Uri.parse("https://dl.dropboxusercontent.com/u/1278290/ColonyNavigator3Update"));
+				startActivity(intent);
 				
 				return true;
 			}
